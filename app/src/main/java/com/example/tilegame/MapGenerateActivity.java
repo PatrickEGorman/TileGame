@@ -46,6 +46,13 @@ public class MapGenerateActivity extends AppCompatActivity {
         for(int i=0; i < 13; i++) {
             for (int j = 0; j < 9; j++) {
                 int n = rand.nextInt(4);
+                if((n==0 | n==3) && rand.nextInt(2) == 1){
+                    System.out.println(n);
+                    n = rand.nextInt(4);
+                }
+                if(i==0 | i==12 | j==0 | j==8){
+                    n = 3;
+                }
                 try {
                     this.boardLayout[j][i] = (GenericTile) tileTypes.get(n).newInstance();
                     ImageView tilePic = tileImageViewList[j][i];
