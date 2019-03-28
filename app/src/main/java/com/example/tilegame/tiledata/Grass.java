@@ -4,9 +4,7 @@ import android.service.quicksettings.Tile;
 
 public class Grass extends GenericTile {
     public Grass() {
-        super();
-
-        this.path = this.path.concat("grass.png");
+        this.path = "grass.png";
     }
 }
 

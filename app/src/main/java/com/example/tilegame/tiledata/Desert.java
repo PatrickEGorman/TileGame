@@ -4,8 +4,6 @@ import android.service.quicksettings.Tile;
 
 public class Desert extends GenericTile {
     public Desert() {
-        super();
-
-        this.path = this.path.concat("desert.png");
+        this.path = "desert.png";
     }
 }
