@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,26 +30,30 @@ public class MapGenerateActivity extends AppCompatActivity {
         makeTileImageViewList();
         randomizeTiles();
     }
-
+    /*
+    Assigns random images to tiles and updates class list to include randomized tiles
+     */
     protected void randomizeTiles(){
         Random rand = new Random();
+
         ArrayList<Class <? extends GenericTile>> tileTypes
                 = new ArrayList<Class <? extends GenericTile>>();
-        tileTypes.add(0, Desert.class);
+        tileTypes.add(0, Rock.class);
         tileTypes.add(1, Grass.class);
-        tileTypes.add(2, Rock.class);
+        tileTypes.add(2, Desert.class);
         tileTypes.add(3, Water.class);
 
         this.boardLayout = new GenericTile[9][13];
         AssetManager manager;
         manager = getAssets();
+        Rect rect = new Rect(0,0,0,0);
 
         for(int i=0; i < 13; i++) {
             for (int j = 0; j < 9; j++) {
                 int n = rand.nextInt(4);
-                if((n==0 | n==3) && rand.nextInt(2) == 1){
+                if((n==2 | n==3) && rand.nextInt(2) == 1){
                     System.out.println(n);
-                    n = rand.nextInt(4);
+                    n = rand.nextInt(2);
                 }
                 if(i==0 | i==12 | j==0 | j==8){
                     n = 3;
@@ -58,7 +63,7 @@ public class MapGenerateActivity extends AppCompatActivity {
                     ImageView tilePic = tileImageViewList[j][i];
                     InputStream open;
                     open = manager.open(this.boardLayout[j][i].path);
-                    Bitmap bitmap = BitmapFactory.decodeStream(open);
+                    Bitmap bitmap = BitmapFactory.decodeStream(open, rect, null);
                     // Assign the bitmap to an ImageView in this layout
                     tilePic.setImageBitmap(bitmap);
                 } catch (IOException | IllegalAccessException | InstantiationException e) {
@@ -67,7 +72,9 @@ public class MapGenerateActivity extends AppCompatActivity {
             }
         }
     }
-
+    /*
+    Maps tiles into a grid
+     */
     protected void makeTileImageViewList(){
         this.tileImageViewList = new ImageView[9][13];
         //row 1
