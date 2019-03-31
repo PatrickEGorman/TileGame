@@ -1,21 +1,15 @@
 package com.example.tilegame;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Rect;
-import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.example.tilegame.tileLayout.DefaultLayoutGenerator;
+import com.example.tilegame.tileLayout.RandomLayoutGenerator;
+import com.example.tilegame.tileLayout.TileLayoutGenerator;
 import com.example.tilegame.tiledata.*;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class MapGenerateActivity extends AppCompatActivity {
 
@@ -27,54 +21,26 @@ public class MapGenerateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_generate);
         makeTileImageViewList();
-        randomizeTiles();
-    }
-    /*
-    Assigns random images to tiles and updates class list to include randomized tiles
-     */
-    protected void randomizeTiles(){
-        Random rand = new Random();
-
-        ArrayList<Class <? extends GenericTile>> tileTypes
-                = new ArrayList<Class <? extends GenericTile>>();
-        tileTypes.add(0, Rock.class);
-        tileTypes.add(1, Grass.class);
-        tileTypes.add(2, Desert.class);
-        tileTypes.add(3, Water.class);
-
         this.boardLayout = new GenericTile[9][13];
         AssetManager manager;
         manager = getAssets();
-        Rect rect = new Rect(0,0,0,0);
 
-        for(int i=0; i < 13; i++) {
-            for (int j = 0; j < 9; j++) {
-                int n = rand.nextInt(4);
-                if((n==2 | n==3) && rand.nextInt(2) == 1){
-                    System.out.println(n);
-                    n = rand.nextInt(2);
-                }
-                if(i==0 | i==12 | j==0 | j==8){
-                    n = 3;
-                }
-                try {
-                    this.boardLayout[j][i] = (GenericTile) tileTypes.get(n).newInstance();
-                    ImageView tilePic = tileImageViewList[j][i];
-                    InputStream open;
-                    open = manager.open(this.boardLayout[j][i].path);
-                    Bitmap bitmap = BitmapFactory.decodeStream(open, rect, null);
-                    // Assign the bitmap to an ImageView in this layout
-                    tilePic.setImageBitmap(bitmap);
-                } catch (IOException | IllegalAccessException | InstantiationException e) {
-                    e.printStackTrace();
-                }
-            }
+        Intent intent = getIntent();
+        String mode = intent.getStringExtra(MainActivity.MAP_MODE);
+
+        if(mode.equals("default")) {
+            DefaultLayoutGenerator gen = new DefaultLayoutGenerator();
+            gen.generateLayout(tileImageViewList, manager);
+        }
+        else if(mode.equals("random")) {
+            RandomLayoutGenerator gen = new RandomLayoutGenerator();
+            gen.generateLayout(tileImageViewList, manager);
         }
     }
     /*
     Maps tiles into a grid
      */
-    protected void makeTileImageViewList(){
+    private void makeTileImageViewList(){
         this.tileImageViewList = new ImageView[9][13];
         //row 1
         this.tileImageViewList[0][0] = (ImageView) findViewById(R.id.tile11);

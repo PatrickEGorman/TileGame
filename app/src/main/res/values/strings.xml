@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TileGame</string>
+    <string name="generate_button">Generate Map</string>
+    <string name="default_map_toggle">Default Map</string>
+    <string name="random_map_toggle">Random Map</string>
+    <string name="json_map_toggle">Preset Map</string>
 </resources>
