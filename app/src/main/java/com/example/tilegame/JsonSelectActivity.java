@@ -35,13 +35,7 @@ public class JsonSelectActivity extends AppCompatActivity implements
     }
 
     public void generateMapButtonClick(View view){
-        if(this.current_file_selection!=null) {
-            generateMapActivity(current_file_selection);
-        }
-        else{
-            TextView mainMenuText = findViewById(R.id.errorDisplay);
-            mainMenuText.setText("Please Select A Menu Option!");
-        }
+        generateMapActivity(current_file_selection);
 
     }
 
