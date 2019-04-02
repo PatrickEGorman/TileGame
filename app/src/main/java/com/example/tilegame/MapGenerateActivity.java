@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.example.tilegame.tileLayout.DefaultLayoutGenerator;
+import com.example.tilegame.tileLayout.JsonLayoutGenerator;
 import com.example.tilegame.tileLayout.RandomLayoutGenerator;
-import com.example.tilegame.tileLayout.TileLayoutGenerator;
 import com.example.tilegame.tiledata.*;
 
 public class MapGenerateActivity extends AppCompatActivity {
@@ -34,6 +34,11 @@ public class MapGenerateActivity extends AppCompatActivity {
         }
         else if(mode.equals("random")) {
             RandomLayoutGenerator gen = new RandomLayoutGenerator();
+            gen.generateLayout(tileImageViewList, manager);
+        }
+        else if(mode.equals("json")) {
+            JsonLayoutGenerator gen = new
+                    JsonLayoutGenerator(intent.getStringExtra(JsonSelectActivity.FILE_NAME));
             gen.generateLayout(tileImageViewList, manager);
         }
     }

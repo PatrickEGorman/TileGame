@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,10 +30,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.json_toggle:
+                Intent generate = new Intent(this, JsonSelectActivity.class);
+                startActivity(generate);
                 break;
 
             default:
-
+                TextView mainMenuText = findViewById(R.id.mainMenuText);
+                mainMenuText.setText("Please Select A Menu Option!");
         }
 
     }

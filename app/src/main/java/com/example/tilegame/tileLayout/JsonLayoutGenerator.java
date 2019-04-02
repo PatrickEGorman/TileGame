@@ -3,10 +3,87 @@ package com.example.tilegame.tileLayout;
 import android.content.res.AssetManager;
 import android.widget.ImageView;
 
+import com.example.tilegame.tiledata.GenericTile;
+import com.example.tilegame.tiledata.Grass;
+import com.example.tilegame.tiledata.Rock;
+import com.example.tilegame.tiledata.Water;
+import com.example.tilegame.tiledata.Desert;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
+
 public class JsonLayoutGenerator implements TileLayoutGenerator {
+
+    public String jsonFilePath;
+
+    public JsonLayoutGenerator(String jsonFilePath){
+        this.jsonFilePath = jsonFilePath;
+    }
+
+
     @Override
     public TileLayout generateLayout(ImageView[][] tileList, AssetManager manager) {
-        TileLayout JsonLayout = new TileLayout(tileList, manager);
-        return JsonLayout;
+        TileLayout jsonLayout = new TileLayout(tileList, manager);
+        String encodedJson = "";
+        try {
+            InputStream stream;
+            stream = manager.open(jsonFilePath);
+            java.util.Scanner s = new java.util.Scanner(stream).useDelimiter("\\A");
+            encodedJson = s.hasNext() ? s.next() : "";
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            JSONArray jsonMapArray = new JSONArray(encodedJson);
+            Map<String, Class <? extends GenericTile>> tileTypes
+                    = new HashMap<String, Class <? extends GenericTile>>();
+            tileTypes.put("rock", Rock.class);
+            tileTypes.put("grass", Grass.class);
+            tileTypes.put("desert", Desert.class);
+            tileTypes.put("water", Water.class);
+
+            for (int i=0; i<117; i++) {
+                System.out.println(i);
+                JSONObject jsonTileObject = jsonMapArray.getJSONObject(i).getJSONObject("tile");
+                int x = jsonTileObject.getJSONObject("position").getInt("x");
+                int y = jsonTileObject.getJSONObject("position").getInt("y");
+                String type = jsonTileObject.getString("type");
+                jsonLayout.setTile(x, y, tileTypes.get(type));
+            }
+
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println(encodedJson);
+        System.out.println("test");
+        return jsonLayout;
+    }
+
+    public String convert(InputStream inputStream, Charset charset) throws IOException {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        String line = "";
+
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, charset))) {
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return stringBuilder.toString();
     }
 }

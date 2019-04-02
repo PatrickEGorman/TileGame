@@ -14,8 +14,8 @@ import java.io.InputStream;
 
 public class TileLayout {
     public GenericTile[][] boardLayout;
-    ImageView[][] tileList;
-    AssetManager manager;
+    public ImageView[][] tileList;
+    private AssetManager manager;
 
     public TileLayout(ImageView[][] tileListInput, AssetManager manager){
         boardLayout = new GenericTile[9][13];
@@ -48,7 +48,7 @@ public class TileLayout {
         Rect rect = new Rect(0,0,0,0);
 
         try{
-            boardLayout[x][y] = (GenericTile) tileType.newInstance();
+            boardLayout[x][y] = tileType.newInstance();
             ImageView tilePic = tileList[x][y];
             InputStream open;
             open = this.manager.open(this.boardLayout[x][y].path);
