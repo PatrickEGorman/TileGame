@@ -44,29 +44,11 @@ public class JsonLayoutGenerator implements TileLayoutGenerator {
             e.printStackTrace();
         }
         try {
-            JSONArray jsonMapArray = new JSONArray(encodedJson);
-            Map<String, Class <? extends GenericTile>> tileTypes
-                    = new HashMap<String, Class <? extends GenericTile>>();
-            tileTypes.put("rock", Rock.class);
-            tileTypes.put("grass", Grass.class);
-            tileTypes.put("desert", Desert.class);
-            tileTypes.put("water", Water.class);
-
-            for (int i=0; i<117; i++) {
-                System.out.println(i);
-                JSONObject jsonTileObject = jsonMapArray.getJSONObject(i).getJSONObject("tile");
-                int x = jsonTileObject.getJSONObject("position").getInt("x");
-                int y = jsonTileObject.getJSONObject("position").getInt("y");
-                String type = jsonTileObject.getString("type");
-                jsonLayout.setTile(x, y, tileTypes.get(type));
-            }
-
+            jsonLayout.decodeJson(encodedJson);
         }
         catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println(encodedJson);
-        System.out.println("test");
         return jsonLayout;
     }
 

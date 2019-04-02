@@ -7,10 +7,20 @@ import android.graphics.Rect;
 import android.view.ContextThemeWrapper;
 import android.widget.ImageView;
 
+import com.example.tilegame.tiledata.Desert;
 import com.example.tilegame.tiledata.GenericTile;
+import com.example.tilegame.tiledata.Grass;
+import com.example.tilegame.tiledata.Rock;
+import com.example.tilegame.tiledata.Water;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TileLayout {
     public GenericTile[][] boardLayout;
@@ -60,6 +70,29 @@ public class TileLayout {
         catch(IndexOutOfBoundsException | IllegalAccessException | InstantiationException |
                 IOException e){
             e.printStackTrace();
+        }
+    }
+
+
+    /*
+    Takes a JSON string in standard format and makes it into a TileLayout
+    @param encodedJson JSON encoded in standard file format
+     */
+    public void decodeJson(String encodedJson) throws JSONException {
+        JSONArray jsonMapArray = new JSONArray(encodedJson);
+        Map<String, Class <? extends GenericTile>> tileTypes
+                = new HashMap<>();
+        tileTypes.put("rock", Rock.class);
+        tileTypes.put("grass", Grass.class);
+        tileTypes.put("desert", Desert.class);
+        tileTypes.put("water", Water.class);
+
+        for (int i=0; i<117; i++) {
+            JSONObject jsonTileObject = jsonMapArray.getJSONObject(i).getJSONObject("tile");
+            int x = jsonTileObject.getJSONObject("position").getInt("x");
+            int y = jsonTileObject.getJSONObject("position").getInt("y");
+            String type = jsonTileObject.getString("type");
+            this.setTile(x, y, tileTypes.get(type));
         }
     }
 
