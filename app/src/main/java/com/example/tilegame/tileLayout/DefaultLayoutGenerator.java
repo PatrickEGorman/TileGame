@@ -28,9 +28,6 @@ public class DefaultLayoutGenerator implements TileLayoutGenerator {
         for(int i=0; i < 9; i++) {
             for (int j = 0; j < 13; j++) {
                 int n = (i*j)%4;
-                if(j==0 | j==12 | i==0 | i==8){
-                    n = 3;
-                }
                 presetLayout.setTile(i, j, tileTypes.get(n));
             }
         }

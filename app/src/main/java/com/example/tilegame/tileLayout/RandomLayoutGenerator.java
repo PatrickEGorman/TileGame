@@ -33,12 +33,6 @@ public class RandomLayoutGenerator implements TileLayoutGenerator {
         for(int i=0; i < 9; i++) {
             for (int j = 0; j < 13; j++) {
                 int n = rand.nextInt(4);
-                if((n==2 | n==3) && rand.nextInt(2) == 1){
-                    n = rand.nextInt(2);
-                }
-                if(j==0 | j==12 | i==0 | i==8){
-                    n = 3;
-                }
                 randomLayout.setTile(i, j, tileTypes.get(n));
             }
         }
