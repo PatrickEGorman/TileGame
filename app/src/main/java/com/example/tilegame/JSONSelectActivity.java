@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonSelectActivity extends AppCompatActivity implements
+public class JSONSelectActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
 
     public static final String MAP_MODE = "com.example.tilegame.MAP_MODE";
@@ -26,12 +26,12 @@ public class JsonSelectActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_json_select);
-        Spinner jsonSelector = findViewById(R.id.json_selector);
+        Spinner JSONSelector = findViewById(R.id.json_selector);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                android.R.layout.simple_spinner_item, getFileNames());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        jsonSelector.setAdapter(adapter);
-        jsonSelector.setOnItemSelectedListener(this);
+        JSONSelector.setAdapter(adapter);
+        JSONSelector.setOnItemSelectedListener(this);
     }
 
     public void generateMapButtonClick(View view){

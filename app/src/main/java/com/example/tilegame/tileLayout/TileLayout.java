@@ -76,10 +76,10 @@ public class TileLayout {
 
     /*
     Takes a JSON string in standard format and makes it into a TileLayout
-    @param encodedJson JSON encoded in standard file format
+    @param encodedJSON JSON encoded in standard file format
      */
-    public void decodeJson(String encodedJson) throws JSONException {
-        JSONArray jsonMapArray = new JSONArray(encodedJson);
+    public void decodeJSON(String encodedJSON) throws JSONException {
+        JSONArray JSONMapArray = new JSONArray(encodedJSON);
         Map<String, Class <? extends GenericTile>> tileTypes
                 = new HashMap<>();
         tileTypes.put("rock", Rock.class);
@@ -88,10 +88,10 @@ public class TileLayout {
         tileTypes.put("water", Water.class);
 
         for (int i=0; i<117; i++) {
-            JSONObject jsonTileObject = jsonMapArray.getJSONObject(i).getJSONObject("tile");
-            int x = jsonTileObject.getJSONObject("position").getInt("x");
-            int y = jsonTileObject.getJSONObject("position").getInt("y");
-            String type = jsonTileObject.getString("type");
+            JSONObject JSONTileObject = JSONMapArray.getJSONObject(i).getJSONObject("tile");
+            int x = JSONTileObject.getJSONObject("position").getInt("x");
+            int y = JSONTileObject.getJSONObject("position").getInt("y");
+            String type = JSONTileObject.getString("type");
             this.setTile(x, y, tileTypes.get(type));
         }
     }

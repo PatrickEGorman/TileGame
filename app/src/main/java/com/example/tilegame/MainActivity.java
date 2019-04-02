@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.json_toggle:
-                Intent generate = new Intent(this, JsonSelectActivity.class);
+                Intent generate = new Intent(this, JSONSelectActivity.class);
                 startActivity(generate);
                 break;
 
