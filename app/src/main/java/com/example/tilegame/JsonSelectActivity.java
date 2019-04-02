@@ -1,6 +1,7 @@
 package com.example.tilegame;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,44 +11,36 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class JsonSelectActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
 
     public static final String MAP_MODE = "com.example.tilegame.MAP_MODE";
     public static final String FILE_NAME = "com.example.tilegame.FILE_NAME";
-
+    private String current_file_selection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_json_select);
-
-//        Spinner jsonSelector = findViewById(R.id.json_selector);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-//                R.layout.activity_json_select, R.id.json_textview);
-//        adapter.add("hi");
-//        adapter.add("test");
-//        jsonSelector.setAdapter(adapter);
-//        jsonSelector.setOnItemSelectedListener(this);
+        Spinner jsonSelector = findViewById(R.id.json_selector);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+               android.R.layout.simple_spinner_item, getFileNames());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        jsonSelector.setAdapter(adapter);
+        jsonSelector.setOnItemSelectedListener(this);
     }
 
     public void generateMapButtonClick(View view){
-        RadioGroup mapSelection = findViewById(R.id.json_radio_selector);
-        int modeID = mapSelection.getCheckedRadioButtonId();
-        switch(modeID){
-            case R.id.islands:
-                generateMapActivity("maps/islands.json");
-                break;
-
-            case R.id.mixed_landscape:
-                generateMapActivity("maps/mixed_landscape.json");
-                break;
-
-            default:
-                TextView mainMenuText = findViewById(R.id.errorDisplay);
-                mainMenuText.setText("Please Select A Menu Option!");
+        if(this.current_file_selection!=null) {
+            generateMapActivity(current_file_selection);
+        }
+        else{
+            TextView mainMenuText = findViewById(R.id.errorDisplay);
+            mainMenuText.setText("Please Select A Menu Option!");
         }
 
     }
@@ -59,14 +52,27 @@ public class JsonSelectActivity extends AppCompatActivity implements
         startActivity(generate);
     }
 
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        System.out.println(parent.getItemAtPosition(pos));
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        String current_menu_selection = parent.getItemAtPosition(pos).toString();
+        this.current_file_selection = "maps/"+current_menu_selection+".json";
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
+    }
+
+    private String[] getFileNames(){
+        AssetManager manager;
+        manager = getAssets();
+        String[] files = {""};
+        try{
+            files =  manager.list("maps/");
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        for(int i=0;i<files.length; i++){
+            files[i] = files[i].substring(0, files[i].length()-5);
+        }
+        return files;
     }
 }
