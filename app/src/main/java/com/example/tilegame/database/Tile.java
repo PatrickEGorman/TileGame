@@ -15,10 +15,9 @@ public class Tile {
     @ColumnInfo(name = "y")
     public int y;
 
-    @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "coordinate")
-    String coord;
+    @ColumnInfo(name = "layout")
+    String layout;
 
     @NonNull
     @ColumnInfo(name = "type")
@@ -29,7 +28,6 @@ public class Tile {
         this.x = x;
         this.y = y;
         this.type = type;
-        this.coord = "("+x+","+")";
     }
 
     @NonNull

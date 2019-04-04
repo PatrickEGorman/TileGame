@@ -3,6 +3,7 @@ package com.example.tilegame.database;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Relation;
 import android.support.annotation.NonNull;
 
 import com.example.tilegame.tileLayout.TileLayout;
@@ -16,10 +17,11 @@ public class Layout {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "name")
-    String name;
+    private String name;
 
     @NonNull
     @ColumnInfo(name = "type")
+    @Relation(parentColumn = "name", entityColumn = "layout")
     private List<Tile> tiles;
 
     public Layout(@NonNull TileLayout layout, @NonNull String name) {
