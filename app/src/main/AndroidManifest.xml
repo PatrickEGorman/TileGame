@@ -9,9 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".JSONSelectActivity"></activity>
+        <activity
+            android:name=".LevelEditorActivity"
+            android:label="@string/title_activity_level_editor"
+            android:theme="@style/NoActionBar"></activity>
+        <activity android:name=".JSONSelectActivity" />
         <activity android:name=".MapGenerateActivity" />
-        <activity android:name=".DatabaseSelectActivity"/>
+        <activity android:name=".DatabaseSelectActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +24,5 @@
             </intent-filter>
         </activity>
     </application>
-
 
 </manifest>

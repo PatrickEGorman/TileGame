@@ -6,4 +6,6 @@
     <string name="json_map_toggle">Preset Map</string>
     <string name="database_map_toggle">User Map</string>
     <string name="delete_button">Delete Map</string>
+    <string name="title_activity_level_editor">LevelEditorActivity</string>
+    <string name="level_editor_toggle">Map Editor</string>
 </resources>
