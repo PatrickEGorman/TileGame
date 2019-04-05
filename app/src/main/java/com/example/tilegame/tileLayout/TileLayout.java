@@ -23,8 +23,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TileLayout {
-    public GenericTile[][] boardLayout;
-    public ImageView[][] tileList;
+
+    public String name;
+    private GenericTile[][] boardLayout;
+    private ImageView[][] tileList;
     private AssetManager manager;
 
     public TileLayout(ImageView[][] tileListInput, AssetManager manager){
@@ -46,6 +48,14 @@ public class TileLayout {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     /*
@@ -95,5 +105,7 @@ public class TileLayout {
             this.setTile(x, y, tileTypes.get(type));
         }
     }
+
+
 
 }

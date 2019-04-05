@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapGenerateActivity"
-    android:background="#3062CC">
+    android:background="#3062CC"
+    tools:context=".MapGenerateActivity">
 
     <Space
         android:layout_width="wrap_content"
@@ -2041,4 +2041,29 @@
         </LinearLayout>
 
     </GridLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/save_layout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="7dp"
+        android:clickable="true"
+        android:onClick="saveLayout"
+        android:src="@drawable/ic_save_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/layout_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="7dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Layout Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

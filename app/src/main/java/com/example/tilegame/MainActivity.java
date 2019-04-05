@@ -33,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent generate = new Intent(this, JSONSelectActivity.class);
                 startActivity(generate);
                 break;
-
+            case R.id.database_toggle:
+                Intent generateData = new Intent(this, DatabaseSelectActivity.class);
+                startActivity(generateData);
+                break;
             default:
                 TextView mainMenuText = findViewById(R.id.mainMenuText);
                 mainMenuText.setText("Please Select A Menu Option!");

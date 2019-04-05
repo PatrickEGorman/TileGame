@@ -1,19 +1,40 @@
 package com.example.tilegame;
 
+import android.arch.lifecycle.Observer;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.database.sqlite.SQLiteConstraintException;
+import android.os.AsyncTask;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
+import com.example.tilegame.database.RepoDatabase;
+import com.example.tilegame.database.dao.LayoutDao;
+import com.example.tilegame.database.dao.TileDao;
+import com.example.tilegame.database.entity.Layout;
+import com.example.tilegame.database.entity.Tile;
 import com.example.tilegame.tileLayout.DefaultLayoutGenerator;
 import com.example.tilegame.tileLayout.JSONLayoutGenerator;
 import com.example.tilegame.tileLayout.RandomLayoutGenerator;
-import com.example.tilegame.tiledata.*;
+import com.example.tilegame.tileLayout.TileLayout;
+import com.example.tilegame.tileLayout.TileLayoutGenerator;
+import com.example.tilegame.tiledata.GenericTile;
+
+import java.util.List;
 
 public class MapGenerateActivity extends AppCompatActivity {
 
-    protected GenericTile[][] boardLayout;
+    private TileLayout tileLayout;
     protected ImageView[][] tileImageViewList;
 
     @Override
@@ -21,25 +42,65 @@ public class MapGenerateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_generate);
         makeTileImageViewList();
-        this.boardLayout = new GenericTile[9][13];
         AssetManager manager;
         manager = getAssets();
 
         Intent intent = getIntent();
         String mode = intent.getStringExtra(MainActivity.MAP_MODE);
+        TileLayoutGenerator gen;
 
         if(mode.equals("default")) {
-            DefaultLayoutGenerator gen = new DefaultLayoutGenerator();
-            gen.generateLayout(tileImageViewList, manager);
+            gen = new DefaultLayoutGenerator();
         }
         else if(mode.equals("random")) {
-            RandomLayoutGenerator gen = new RandomLayoutGenerator();
-            gen.generateLayout(tileImageViewList, manager);
+            gen = new RandomLayoutGenerator();
         }
-        else if(mode.equals("json")) {
-            JSONLayoutGenerator gen = new
-                    JSONLayoutGenerator(intent.getStringExtra(JSONSelectActivity.FILE_NAME));
-            gen.generateLayout(tileImageViewList, manager);
+        else {
+            gen = new JSONLayoutGenerator(intent.getStringExtra(JSONSelectActivity.FILE_NAME));
+        }
+        tileLayout = gen.generateLayout(tileImageViewList, manager);
+    }
+
+    public void saveLayout(View view){
+        EditText nameInput = findViewById(R.id.layout_name);
+        String name = nameInput.getText().toString();
+        RepoDatabase db = RepoDatabase.getDatabase(getApplicationContext());
+        LayoutDao layoutDao = db.layoutDao();
+        TileDao tileDao = db.tileDao();
+        this.tileLayout.setName(name);
+        new DatabaseAsyncTask(this.tileLayout, layoutDao, tileDao).execute();
+    }
+
+    private static class DatabaseAsyncTask extends AsyncTask<Void, Void, Integer> {
+
+        private TileLayout tileLayout;
+        private LayoutDao layoutDao;
+        private TileDao tileDao;
+
+
+        public DatabaseAsyncTask(TileLayout tileLayout, LayoutDao layoutDao, TileDao tileDao) {
+            this.tileLayout = tileLayout;
+            this.layoutDao = layoutDao;
+            this.tileDao = tileDao;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            try {
+                Layout layout = new Layout(this.tileLayout.getName());
+                this.layoutDao.insertLayout(layout);
+                for (int x = 0; x < 9; x++) {
+                    for (int y = 0; y < 13; y++) {
+                        Tile tile = new Tile(x, y, this.tileLayout.getTile(x, y).name,
+                        this.tileLayout.getName());
+                        this.tileDao.insertTile(tile);
+                    }
+                }
+            } catch (SQLiteConstraintException e) {
+                e.printStackTrace();
+            }
+            return null;
+
         }
     }
     /*

@@ -4,4 +4,6 @@
     <string name="default_map_toggle">Default Map</string>
     <string name="random_map_toggle">Random Map</string>
     <string name="json_map_toggle">Preset Map</string>
+    <string name="database_map_toggle">User Map</string>
+
 </resources>

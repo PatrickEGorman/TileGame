@@ -7,13 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class JSONSelectActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
@@ -25,7 +21,7 @@ public class JSONSelectActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_json_select);
+        setContentView(R.layout.activity_database_select);
         Spinner JSONSelector = findViewById(R.id.json_selector);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                android.R.layout.simple_spinner_item, getFileNames());

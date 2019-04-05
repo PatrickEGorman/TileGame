@@ -8,7 +8,7 @@
     tools:context=".JSONSelectActivity">
 
     <Spinner
-        android:id="@+id/json_selector"
+        android:id="@+id/map_selector"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="91dp"
@@ -16,7 +16,7 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:id="@+id/generate_json"
+        android:id="@+id/generate_map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="generateMapButtonClick"

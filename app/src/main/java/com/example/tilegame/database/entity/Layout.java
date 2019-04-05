@@ -1,4 +1,4 @@
-package com.example.tilegame.database;
+package com.example.tilegame.database.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -16,9 +16,7 @@ public class Layout {
     @ColumnInfo(name = "name")
     private String name;
 
-    public Layout(){}
-
-    public Layout(@NonNull TileLayout layout, @NonNull String name) {
+    public Layout(@NonNull String name) {
         this.name = name;
     }
 

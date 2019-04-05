@@ -1,4 +1,4 @@
-package com.example.tilegame.database;
+package com.example.tilegame.database.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -6,7 +6,10 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "tile_table")
+@Entity(tableName = "tile_table",
+        foreignKeys = @ForeignKey(entity = Layout.class,
+        parentColumns = "name",
+        childColumns = "layout"))
 public class Tile {
 
     @PrimaryKey(autoGenerate = true)
@@ -21,7 +24,7 @@ public class Tile {
 
     @NonNull
     @ColumnInfo(name = "layout")
-    String layout;
+    public String layout;
 
     @NonNull
     @ColumnInfo(name = "type")

@@ -1,27 +1,30 @@
 package com.example.tilegame.database;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+
+import com.example.tilegame.database.dao.LayoutDao;
+import com.example.tilegame.database.dao.TileDao;
+import com.example.tilegame.database.entity.Layout;
+import com.example.tilegame.database.entity.Tile;
 
 @Database(entities = {Layout.class, Tile.class}, version = 1)
-public abstract class LayoutRoomDatabase extends RoomDatabase {
+public abstract class RepoDatabase extends RoomDatabase {
 
     public abstract LayoutDao layoutDao();
+    public abstract TileDao tileDao();
 
     // marking the instance as volatile to ensure atomic access to the variable
-    private static volatile LayoutRoomDatabase INSTANCE;
+    private static volatile RepoDatabase INSTANCE;
 
-    static LayoutRoomDatabase getDatabase(final Context context) {
+    public static RepoDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
-            synchronized (LayoutRoomDatabase.class) {
+            synchronized (RepoDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            LayoutRoomDatabase.class, "word_database")
+                            RepoDatabase.class, "repo_database")
                             // Wipes and rebuilds instead of migrating if no Migration object.
                             // Migration is not part of this codelab.
                             .fallbackToDestructiveMigration()
