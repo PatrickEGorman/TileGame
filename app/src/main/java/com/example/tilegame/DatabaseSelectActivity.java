@@ -44,16 +44,18 @@ public class DatabaseSelectActivity extends AppCompatActivity implements
     }
 
     private void setSpinnerAdapter(List<Layout> layouts){
-        List<String> names = new ArrayList<>();
-        for(int i=0; i<layouts.size(); i++){
-            names.add(layouts.get(i).getName());
+        if(layouts != null) {
+            List<String> names = new ArrayList<>();
+            for (int i = 0; i < layouts.size(); i++) {
+                names.add(layouts.get(i).getName());
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_spinner_item, names);
+            Spinner mapSelector = findViewById(R.id.map_selector);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mapSelector.setAdapter(adapter);
+            mapSelector.setOnItemSelectedListener(this);
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, names);
-        Spinner mapSelector = findViewById(R.id.map_selector);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mapSelector.setAdapter(adapter);
-        mapSelector.setOnItemSelectedListener(this);
     }
 
 

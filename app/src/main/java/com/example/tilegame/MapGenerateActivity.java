@@ -1,5 +1,6 @@
 package com.example.tilegame;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
@@ -23,12 +24,13 @@ import com.example.tilegame.database.dao.LayoutDao;
 import com.example.tilegame.database.dao.TileDao;
 import com.example.tilegame.database.entity.Layout;
 import com.example.tilegame.database.entity.Tile;
+import com.example.tilegame.tileLayout.DatabaseLayoutGenerator;
 import com.example.tilegame.tileLayout.DefaultLayoutGenerator;
 import com.example.tilegame.tileLayout.JSONLayoutGenerator;
 import com.example.tilegame.tileLayout.RandomLayoutGenerator;
 import com.example.tilegame.tileLayout.TileLayout;
 import com.example.tilegame.tileLayout.TileLayoutGenerator;
-import com.example.tilegame.tiledata.GenericTile;
+
 
 import java.util.List;
 
@@ -51,14 +53,28 @@ public class MapGenerateActivity extends AppCompatActivity {
 
         if(mode.equals("default")) {
             gen = new DefaultLayoutGenerator();
+            tileLayout = gen.generateLayout(tileImageViewList, manager);
+
         }
         else if(mode.equals("random")) {
             gen = new RandomLayoutGenerator();
+            tileLayout = gen.generateLayout(tileImageViewList, manager);
+        }
+        else if(mode.equals("json")) {
+            gen = new JSONLayoutGenerator(intent.getStringExtra(JSONSelectActivity.FILE_NAME));
+            tileLayout = gen.generateLayout(tileImageViewList, manager);
         }
         else {
-            gen = new JSONLayoutGenerator(intent.getStringExtra(JSONSelectActivity.FILE_NAME));
+            LiveData<List<Tile>> layoutTiles = RepoDatabase.getDatabase(this).tileDao()
+                    .getLayoutTiles(getIntent().getStringExtra(DatabaseSelectActivity.MAP_NAME));
+            layoutTiles.observe(this, new Observer<List<Tile>>() {
+                @Override
+                public void onChanged(@Nullable final List<Tile> tiles) {
+                    generateDatabaseLayout(tiles);
+                }
+            });
         }
-        tileLayout = gen.generateLayout(tileImageViewList, manager);
+        ;
     }
 
     public void saveLayout(View view){
@@ -70,6 +86,13 @@ public class MapGenerateActivity extends AppCompatActivity {
         this.tileLayout.setName(name);
         new DatabaseAsyncTask(this.tileLayout, layoutDao, tileDao).execute();
     }
+
+    public void generateDatabaseLayout(List<Tile> tiles){
+        TileLayoutGenerator gen = new DatabaseLayoutGenerator(getIntent().getStringExtra(DatabaseSelectActivity.MAP_NAME)
+                , this, tiles);
+        tileLayout = gen.generateLayout(tileImageViewList, getAssets());
+    }
+
 
     private static class DatabaseAsyncTask extends AsyncTask<Void, Void, Integer> {
 
