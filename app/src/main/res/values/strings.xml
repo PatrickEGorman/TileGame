@@ -5,5 +5,5 @@
     <string name="random_map_toggle">Random Map</string>
     <string name="json_map_toggle">Preset Map</string>
     <string name="database_map_toggle">User Map</string>
-
+    <string name="delete_button">Delete Map</string>
 </resources>
