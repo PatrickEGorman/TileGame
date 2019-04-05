@@ -21,7 +21,7 @@ public class JSONSelectActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_database_select);
+        setContentView(R.layout.activity_json_select);
         Spinner JSONSelector = findViewById(R.id.json_selector);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                android.R.layout.simple_spinner_item, getFileNames());
